@@ -1,0 +1,308 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=2cm]{geometry}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\linespread{1.3}
+\parskip=12pt
+\parindent=0pt
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage[section]{placeins}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathpazo}
+\usepackage{booktabs}
+\usepackage{float}
+
+\usepackage[dvipsnames]{xcolor}
+\definecolor{slateblue}{RGB}{45, 62, 80}
+\definecolor{FGVBlue}{RGB}{0, 114, 188}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=FGVBlue,
+	urlcolor=FGVBlue,
+	citecolor=FGVBlue,
+}
+
+% Custom commands
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\symbf}[1]{\boldsymbol{#1}}
+
+\newcounter{problem}
+\renewcommand{\theproblem}{\arabic{problem}}
+\newcommand{\problem}{
+	\stepcounter{problem}
+	\section*{Problem \theproblem}
+}
+\newcommand{\itm}[1]{\par\textbf{#1)}\ }
+
+\begin{document}
+	\begin{center}
+		{\LARGE{\textbf{Problem Set IV -- Solutions}}}\\
+		\vspace{0.2cm}
+		Econometrics I - \textcolor{FGVBlue}{FGV EPGE}\\
+		Instructor: Raul Guarini Riva \\
+		TA: Taric Latif Padovani
+	\end{center}
+
+%=====================================================================
+\problem
+
+In both items the CLT is for $\sqrt T$ times the sample mean. Starting the sum at $t=2$, or dividing by $T$ instead of $T-1$, changes nothing in the limit.
+
+\itm{a}
+\emph{Which theorem.} $Y_t$ is serially dependent and need not be an MDS, so we use the CLT for strong mixing processes from Lecture 7 (Hansen, Thm.\ 14.15). It needs more than the problem gives, so we impose:
+\begin{itemize}
+	\item $X_t$ is \emph{strictly} stationary (weak stationarity is not enough for the theorem);
+	\item $\E|X_t|^r<\infty$ for some $r>2$;
+	\item the mixing coefficients satisfy $\sum_{\ell\ge1}\alpha(\ell)^{1-2/r}<\infty$.
+\end{itemize}
+Then $\omega_X^2\equiv\sum_{h=-\infty}^\infty\gamma(h)$ converges and $\frac1{\sqrt T}\sum_{t=1}^TX_t\xrightarrow{d}N(0,\omega_X^2)$.
+
+\emph{From $X$ to $Y$.} The sum of $Y_t$ telescopes into a sum of $X_t$:
+\[
+\sum_{t=2}^TY_t=\sum_{t=2}^TX_t+0.5\sum_{t=1}^{T-1}X_t=1.5\sum_{t=1}^TX_t-X_1-0.5X_T .
+\]
+The last two terms, divided by $\sqrt T$, go to zero in probability (their variance is bounded). Hence
+\[
+\sqrt T\cdot\frac1T\sum_{t=2}^TY_t=1.5\cdot\frac1{\sqrt T}\sum_{t=1}^TX_t+o_p(1)\xrightarrow{d}N\big(0,\ 2.25\,\omega_X^2\big),\qquad\omega_X^2=\sum_{h=-\infty}^\infty\gamma(h).
+\]
+The same answer comes from $Y$'s own autocovariances: $\gamma_Y(h)=1.25\gamma(h)+0.5\gamma(h+1)+0.5\gamma(h-1)$, and summing over $h$ gives $(1.25+0.5+0.5)\,\omega_X^2=2.25\,\omega_X^2$. In general, filtering by $b(L)$ multiplies the long-run variance by $b(1)^2$; here $b(1)=1.5$. (If $\omega_X^2=0$ the limit is degenerate; to get a proper normal limit, assume $\omega_X^2>0$.) Alternatively, apply the same theorem to $Y_t$ directly: it is a function of $(X_t,X_{t-1})$, so it inherits strict stationarity, the moments (by Minkowski) and the mixing rate.
+
+\itm{b}
+\emph{Which theorem.} $Y_t=X_tX_{t-11}$ is a martingale difference sequence, so the MDS CLT from Lecture 7 (Hamilton, Prop.\ 7.8) applies. Let $\mathcal F_t=\sigma(X_s:s\le t)$ and $\sigma^2\equiv\E[X_t^2]$, assumed positive. Check the conditions:
+\begin{itemize}
+	\item \emph{MDS.} $Y_t$ is $\mathcal F_t$-measurable, and $\E[Y_t\mid\mathcal F_{t-1}]=X_{t-11}\E[X_t\mid\mathcal F_{t-1}]=X_{t-11}\E[X_t]=0$, since $X_t$ is independent of the past.
+	\item \emph{Variance.} $\E[Y_t^2]=\E[X_t^2]\E[X_{t-11}^2]=\sigma^4>0$, the same for all $t$.
+	\item \emph{Moments.} With $r=4$: $\E[Y_t^4]=\big(\E[X_t^4]\big)^2<\infty$. This is where the finite fourth moment is used.
+	\item \emph{Sample variance.} $Y_t^2=X_t^2X_{t-11}^2$ is a function of an i.i.d.\ sequence, hence strictly stationary and ergodic, with mean $\sigma^4$. By the ergodic theorem, $\frac1T\sum_tY_t^2\xrightarrow{p}\sigma^4$.
+\end{itemize}
+Therefore
+\[
+\sqrt T\cdot\frac1T\sum_{t=2}^TX_tX_{t-11}\xrightarrow{d}N\big(0,\ \sigma^4\big),\qquad\sigma^4=\big(\E[X_t^2]\big)^2 .
+\]
+There are no autocovariances to add up: an MDS is serially uncorrelated, so the long-run variance is just the variance. Note that the $Y_t$'s are uncorrelated but \emph{not} independent: $Y_t$ and $Y_{t-11}$ share $X_{t-11}$, so, for instance, $Y_t^2$ and $Y_{t-11}^2$ are correlated. This is why we need an MDS CLT rather than the i.i.d.\ one. (Equivalently, $Y_t$ is 11-dependent, and a CLT for $m$-dependent sequences gives the same result.)
+
+%=====================================================================
+\problem
+
+\emph{The product $\symbf B\symbf y_{t-1}$.} Row 1 of $\symbf B$ is $(1,0,\dots,0)$, so the first entry is $y_{t-1}$. For $k=2,\dots,p$, row $k$ has a $1$ in column $k-1$ and a $-1$ in column $k$, so the $k$-th entry is $y_{t-k+1}-y_{t-k}=\Delta y_{t-k+1}$. This gives $(y_{t-1},\Delta y_{t-1},\dots,\Delta y_{t-p+1})'$.
+
+\emph{The equations behind $\phi=\symbf B'(\rho,\beta')'$.} Column $k$ of $\symbf B$ (row $k$ of $\symbf B'$) has a $-1$ in row $k$ (for $k\ge2$) and a $1$ in row $k+1$ (for $k<p$), and column 1 has $1$'s in rows 1 and 2. So
+\[
+\phi_1=\rho+\beta_1,\qquad\phi_k=\beta_k-\beta_{k-1}\ \ (k=2,\dots,p-1),\qquad\phi_p=-\beta_{p-1}.
+\]
+($\symbf B$ is triangular with nonzero diagonal, hence invertible, so $\rho$ and $\beta$ always exist: $\beta_k=-\sum_{i=k+1}^p\phi_i$.)
+
+\itm{a}
+Add the $p$ equations. The $\beta$'s telescope: each $\beta_k$ enters once with a plus sign and once with a minus sign. So
+\[
+\sum_{j=1}^p\phi_j=\rho+(\beta_1-\beta_1)+(\beta_2-\beta_2)+\cdots+(\beta_{p-1}-\beta_{p-1})=\rho .
+\]
+
+\itm{b}
+The AR($p$) is $y_t=\phi'\symbf y_{t-1}+\varepsilon_t$. Using $\phi=\symbf B'(\rho,\beta')'$ and the first part,
+\[
+\phi'\symbf y_{t-1}=(\rho,\beta')\,\symbf B\symbf y_{t-1}=(\rho,\beta_1,\dots,\beta_{p-1})\begin{pmatrix}y_{t-1}\\\Delta y_{t-1}\\\vdots\\\Delta y_{t-p+1}\end{pmatrix}=\rho y_{t-1}+\sum_{j=1}^{p-1}\beta_j\Delta y_{t-j},
+\]
+so
+\[
+y_t=\rho y_{t-1}+\beta_1\Delta y_{t-1}+\cdots+\beta_{p-1}\Delta y_{t-p+1}+\varepsilon_t .
+\]
+This is the same model, written with one level and $p-1$ differences. By a), $\rho=\sum_j\phi_j$, and $z=1$ is a root of $1-\phi_1z-\cdots-\phi_pz^p$ exactly when $\sum_j\phi_j=1$. So a unit root is $\rho=1$, a hypothesis on a single coefficient, which is what the augmented Dickey--Fuller regression tests.
+
+%=====================================================================
+\problem
+
+Multipliers describe how $y$ responds to $x$ holding the shocks fixed, so throughout we set $\varepsilon_t=0$ (equivalently, we compare two paths with the same shocks). Write $d_t\equiv y_t-\bar y$ and $s_t\equiv x_t-\bar x$. The initial steady state satisfies $\bar y=\alpha+\rho\bar y+(\beta_0+\beta_1+\beta_2)\bar x$, and subtracting it from the model,
+\[
+d_t=\rho\,d_{t-1}+\beta_0s_t+\beta_1s_{t-1}+\beta_2s_{t-2},\qquad d_t=0\text{ for }t\le0 .
+\]
+
+\itm{a}
+With $s_1=1$ and $d_0=s_0=s_{-1}=0$, $d_1=\beta_0$. The impact multiplier is $\partial y_1/\partial x_1=\beta_0$.
+
+\itm{b}
+Now $s_1=1$ and $s_t=0$ for $t\ne1$:
+\[
+\begin{aligned}
+d_2&=\rho d_1+\beta_1=\rho\beta_0+\beta_1,\\
+d_3&=\rho d_2+\beta_2=\rho^2\beta_0+\rho\beta_1+\beta_2,\\
+d_4&=\rho d_3=\rho^3\beta_0+\rho^2\beta_1+\rho\beta_2 .
+\end{aligned}
+\]
+The pattern: the shock to $x$ hits $y$ directly through $\beta_0$, $\beta_1$, $\beta_2$ at lags $0,1,2$, and each direct effect is then carried forward by the AR part, shrinking by a factor $\rho$ per period. Once the distributed lag is exhausted ($t\ge3$),
+\[
+d_t=\rho^{t-1}\beta_0+\rho^{t-2}\beta_1+\rho^{t-3}\beta_2=\rho^{t-3}d_3,
+\]
+which dies out geometrically because $|\rho|<1$. In lag-operator terms, the dynamic multipliers are the coefficients of $\frac{\beta_0+\beta_1L+\beta_2L^2}{1-\rho L}$.
+
+\itm{c}
+Now $s_t=1$ for all $t\ge1$. In the new steady state, $y_t=y_{t-1}=y^*$ and $x_t=x_{t-1}=x_{t-2}=\bar x+1$, so
+\[
+y^*=\alpha+\rho y^*+(\beta_0+\beta_1+\beta_2)(\bar x+1)\quad\Longrightarrow\quad y^*=\frac{\alpha+(\beta_0+\beta_1+\beta_2)(\bar x+1)}{1-\rho}.
+\]
+This requires $\rho\neq1$, and $y_t$ actually converges to $y^*$ because $|\rho|<1$: from $t=3$ on, $d_t=\rho d_{t-1}+(\beta_0+\beta_1+\beta_2)$, whose fixed point is $y^*-\bar y$. Since $y^*$ is linear in the level of $x$,
+\[
+\frac{dy^*}{dx}=\frac{\beta_0+\beta_1+\beta_2}{1-\rho}.
+\]
+This is also the sum of all the dynamic multipliers in b): a permanent increase is the sum of one-time increases at every date.
+
+\itm{d}
+With $q$ lags, the steady state gives $y^*=\alpha+\rho y^*+\sum_{j=0}^q\beta_j(\bar x+1)$, so
+\[
+y^*=\frac{\alpha+\big(\sum_{j=0}^q\beta_j\big)(\bar x+1)}{1-\rho}\qquad\Longrightarrow\qquad\text{LRM}=\frac{\sum_{j=0}^q\beta_j}{1-\rho}.
+\]
+\emph{Interpretation.} $\sum_j\beta_j$ is the total \emph{direct} effect: what a permanent unit increase in $x$ would do to $y$ if $y$ did not depend on its own past. But every increase in $y$ feeds into the next period, raising $y_{t+1}$ by $\rho$ times that increase, which then raises $y_{t+2}$ by $\rho^2$ times it, and so on. Adding up these rounds of feedback multiplies the direct effect by $1+\rho+\rho^2+\cdots=\frac1{1-\rho}$.
+\begin{itemize}
+	\item $0<\rho<1$: every round has the same sign as the direct effect, so they reinforce it: $\frac1{1-\rho}>1$, the long-run effect is \emph{amplified}, and it grows without bound as $\rho\to1$ (a unit root).
+	\item $-1<\rho<0$: the rounds alternate in sign and partly undo the direct effect: $\frac1{1-\rho}\in(\frac12,1)$, so the long-run effect is \emph{dampened}.
+\end{itemize}
+This is the formula from Lecture 8 with a single lag of $y$, $\frac{\sum_j\beta_j}{1-\sum_i\phi_i}$.
+
+%=====================================================================
+\problem
+
+Throughout, $\hat{\symbf S}\xrightarrow{p}\symbf S$, $\symbf S$ is symmetric positive definite, and $\symbf Q\equiv\E[Z_tX_t']$ ($\ell\times k$) has full column rank $k$ (identification). The estimator is efficient GMM, $\hat\beta=\arg\min_b\hat m_T(b)'\hat{\symbf S}^{-1}\hat m_T(b)$, with $\hat m_T(b)=\frac1T\symbf Z'(\symbf Y-\symbf Xb)$.
+
+\itm{a}
+$\symbf S^{-1}$ is symmetric positive definite, so it has a Cholesky factorization $\symbf S^{-1}=\symbf C\symbf C'$ with $\symbf C$ lower triangular and invertible (any square root would do). Inverting, $\symbf S=(\symbf C\symbf C')^{-1}=\symbf C'^{-1}\symbf C^{-1}$.
+
+\itm{b}
+Insert $\symbf C\symbf C^{-1}=\symbf I$ and $\symbf C'^{-1}\symbf C'=\symbf I$ around $\hat{\symbf S}^{-1}$:
+\[
+J=T\,\hat m_T(\hat\beta)'\,\symbf C\,\big(\symbf C^{-1}\hat{\symbf S}^{-1}\symbf C'^{-1}\big)\,\symbf C'\hat m_T(\hat\beta)=T\big(\symbf C'\hat m_T(\hat\beta)\big)'\big(\symbf C'\hat{\symbf S}\symbf C\big)^{-1}\symbf C'\hat m_T(\hat\beta),
+\]
+since $\big(\symbf C'\hat{\symbf S}\symbf C\big)^{-1}=\symbf C^{-1}\hat{\symbf S}^{-1}\symbf C'^{-1}$.
+
+\itm{c}
+Since $\symbf Y-\symbf X\hat\beta=\symbf e-\symbf X(\hat\beta-\beta)$,
+\[
+\hat m_T(\hat\beta)=\hat m_T(\beta)-\Big(\tfrac1T\symbf Z'\symbf X\Big)(\hat\beta-\beta).
+\]
+The linear GMM estimator has the closed form $\hat\beta=\big[(\frac1T\symbf X'\symbf Z)\hat{\symbf S}^{-1}(\frac1T\symbf Z'\symbf X)\big]^{-1}(\frac1T\symbf X'\symbf Z)\hat{\symbf S}^{-1}\frac1T\symbf Z'\symbf Y$, and substituting $\symbf Y=\symbf X\beta+\symbf e$,
+\[
+\hat\beta-\beta=\Big[\Big(\tfrac1T\symbf X'\symbf Z\Big)\hat{\symbf S}^{-1}\Big(\tfrac1T\symbf Z'\symbf X\Big)\Big]^{-1}\Big(\tfrac1T\symbf X'\symbf Z\Big)\hat{\symbf S}^{-1}\hat m_T(\beta).
+\]
+Plug this in, premultiply by $\symbf C'$, and write $\hat m_T(\beta)=\symbf C'^{-1}\symbf C'\hat m_T(\beta)$ in the second term:
+\[
+\symbf C'\hat m_T(\hat\beta)=\Big\{\symbf I_\ell-\symbf C'\Big(\tfrac1T\symbf Z'\symbf X\Big)\Big[\Big(\tfrac1T\symbf X'\symbf Z\Big)\hat{\symbf S}^{-1}\Big(\tfrac1T\symbf Z'\symbf X\Big)\Big]^{-1}\Big(\tfrac1T\symbf X'\symbf Z\Big)\hat{\symbf S}^{-1}\symbf C'^{-1}\Big\}\symbf C'\hat m_T(\beta)=\symbf A_T\,\symbf C'\hat m_T(\beta).
+\]
+
+\itm{d}
+By the law of large numbers, $\frac1T\symbf Z'\symbf X\xrightarrow{p}\symbf Q$, and $\hat{\symbf S}\xrightarrow{p}\symbf S$. Since inversion is continuous at nonsingular matrices, the continuous mapping theorem gives
+\[
+\symbf A_T\xrightarrow{p}\symbf I_\ell-\symbf C'\symbf Q\big[\symbf Q'\symbf S^{-1}\symbf Q\big]^{-1}\symbf Q'\symbf S^{-1}\symbf C'^{-1}.
+\]
+With $\symbf R=\symbf C'\symbf Q$ and $\symbf S^{-1}=\symbf C\symbf C'$: $\symbf Q'\symbf S^{-1}\symbf Q=\symbf Q'\symbf C\symbf C'\symbf Q=\symbf R'\symbf R$, and $\symbf Q'\symbf S^{-1}\symbf C'^{-1}=\symbf Q'\symbf C\symbf C'\symbf C'^{-1}=\symbf Q'\symbf C=\symbf R'$. Hence $\symbf A_T\xrightarrow{p}\symbf I_\ell-\symbf R(\symbf R'\symbf R)^{-1}\symbf R'\equiv\symbf M$. ($\symbf R'\symbf R$ is invertible because $\symbf C$ is invertible and $\symbf Q$ has full column rank.)
+
+\itm{e}
+$\symbf S$ is the asymptotic variance of the moments: $T^{1/2}\hat m_T(\beta)=\frac1{\sqrt T}\sum_tZ_te_t\xrightarrow{d}N(0,\symbf S)$, by the CLT that fits the data (i.i.d., MDS or mixing; Lecture 7). Multiplying by the fixed matrix $\symbf C'$,
+\[
+T^{1/2}\symbf C'\hat m_T(\beta)\xrightarrow{d}N\big(0,\symbf C'\symbf S\symbf C\big)=N\big(0,\symbf C'\symbf C'^{-1}\symbf C^{-1}\symbf C\big)=N(0,\symbf I_\ell)\equiv u .
+\]
+
+\itm{f}
+By b) and c),
+\[
+J=\big(\symbf A_T\,T^{1/2}\symbf C'\hat m_T(\beta)\big)'\big(\symbf C'\hat{\symbf S}\symbf C\big)^{-1}\big(\symbf A_T\,T^{1/2}\symbf C'\hat m_T(\beta)\big).
+\]
+$\symbf A_T\xrightarrow{p}\symbf M$ by d), $T^{1/2}\symbf C'\hat m_T(\beta)\xrightarrow{d}u$ by e), and $\symbf C'\hat{\symbf S}\symbf C\xrightarrow{p}\symbf C'\symbf S\symbf C=\symbf I_\ell$. By Slutsky's theorem and the continuous mapping theorem,
+\[
+J\xrightarrow{d}(\symbf Mu)'\symbf I_\ell(\symbf Mu)=u'\symbf M'\symbf Mu=u'\symbf Mu,
+\]
+because $\symbf M$ is symmetric and idempotent ($\symbf M'\symbf M=\symbf M^2=\symbf M$).
+
+\itm{g}
+$\symbf M$ is the orthogonal projection onto the orthogonal complement of the column space of $\symbf R$: symmetric, idempotent, with eigenvalues in $\{0,1\}$. Its rank equals its trace:
+\[
+\mathrm{tr}(\symbf M)=\ell-\mathrm{tr}\big(\symbf R(\symbf R'\symbf R)^{-1}\symbf R'\big)=\ell-\mathrm{tr}\big((\symbf R'\symbf R)^{-1}\symbf R'\symbf R\big)=\ell-\mathrm{tr}(\symbf I_k)=\ell-k .
+\]
+By the spectral theorem, $\symbf M=\symbf P\Lambda\symbf P'$ with $\symbf P$ orthogonal and $\Lambda=\mathrm{diag}(1,\dots,1,0,\dots,0)$, with $\ell-k$ ones. Let $v=\symbf P'u\sim N(0,\symbf P'\symbf P)=N(0,\symbf I_\ell)$. Then
+\[
+u'\symbf Mu=v'\Lambda v=\sum_{i=1}^{\ell-k}v_i^2\sim\chi^2_{\ell-k},
+\]
+a sum of $\ell-k$ squared independent standard normals. With b)--f), $J\xrightarrow{d}\chi^2_{\ell-k}$. The degrees of freedom are $\ell-k$, not $\ell$, because estimating $k$ parameters sets $k$ combinations of the sample moments to zero: only $\ell-k$ directions are left to test.
+
+%=====================================================================
+\problem
+
+\emph{Setup.} One parameter and two moment conditions, so the model is overidentified:
+\[
+g_i(\mu)=\begin{pmatrix}Y_i-\mu\\X_i\end{pmatrix},\qquad\E[g_i(\mu)]=0,\qquad\hat g_n(\mu)=\begin{pmatrix}\bar Y-\mu\\\bar X\end{pmatrix}.
+\]
+With an i.i.d.\ sample, the efficient weighting matrix is $\symbf W=\symbf S^{-1}$, where
+\[
+\symbf S=\Var(g_i)=\begin{pmatrix}\sigma_Y^2&\sigma_{YX}\\\sigma_{YX}&\sigma_X^2\end{pmatrix},\qquad\symbf S^{-1}=\frac1{\sigma_Y^2\sigma_X^2-\sigma_{YX}^2}\begin{pmatrix}\sigma_X^2&-\sigma_{YX}\\-\sigma_{YX}&\sigma_Y^2\end{pmatrix},
+\]
+with $\sigma_{YX}=\Cov(Y_i,X_i)$; assume $\symbf S$ is nonsingular.
+
+\emph{The estimator.} Minimizing $\hat g_n(\mu)'\symbf W\hat g_n(\mu)$, the first-order condition is $w_{11}(\bar Y-\mu)+w_{12}\bar X=0$, so
+\[
+\hat\mu=\bar Y+\frac{w_{12}}{w_{11}}\bar X=\bar Y-\frac{\sigma_{YX}}{\sigma_X^2}\,\bar X .
+\]
+The feasible two-step version replaces $\sigma_{YX}$ and $\sigma_X^2$ by sample analogues, for example $\hat\sigma_{YX}=\frac1n\sum_i(Y_i-\bar Y)X_i$ and $\hat\sigma_X^2=\frac1n\sum_iX_i^2$ (from $\hat{\symbf S}=\frac1n\sum_ig_i(\bar Y)g_i(\bar Y)'$). Up to the centering of $\hat\sigma_X^2$, which does not matter asymptotically, $\hat\mu$ is the intercept in the OLS regression of $Y_i$ on a constant and $X_i$.
+
+\emph{Its variance.} With $\symbf D=\partial\E[g_i]/\partial\mu=(-1,0)'$, the efficient GMM variance is
+\[
+(\symbf D'\symbf S^{-1}\symbf D)^{-1}=\frac1{w_{11}}=\sigma_Y^2-\frac{\sigma_{YX}^2}{\sigma_X^2}=\sigma_Y^2\big(1-\rho_{YX}^2\big)\le\sigma_Y^2,
+\]
+where $\rho_{YX}$ is the correlation between $Y$ and $X$. The sample mean alone has asymptotic variance $\sigma_Y^2$.
+
+\emph{Why $X$ helps.} We know that $\E[X_i]=0$, so $\bar X$ is pure sampling noise, and we can see how big it is in our sample. If $X$ and $Y$ are correlated, the sampling error in $\bar Y$ moves together with $\bar X$: when the sample happens to have a high $\bar X$, it probably also has a $\bar Y$ above $\mu$. The estimator removes the part of $\bar Y$'s error that is predicted by $\bar X$, which is the classic \emph{control variate} (or regression adjustment). The gain is a factor $1-\rho_{YX}^2$ in variance; if $X$ and $Y$ are uncorrelated, the adjustment vanishes and $\hat\mu=\bar Y$.
+
+%=====================================================================
+\problem
+
+Let $\symbf Q\equiv\E[Z_iX_i']$ ($\ell\times k$, full column rank) and $\hat{\symbf Q}_n=\frac1n\sum_iZ_iX_i'$.
+
+\itm{a}
+With $\hat m_n(b)=\frac1n\sum_iZ_i(Y_i-X_i'b)$, $\hat\beta=\arg\min_b\hat m_n(b)'W\hat m_n(b)$, which in closed form is
+\[
+\hat\beta=\big(\hat{\symbf Q}_n'W\hat{\symbf Q}_n\big)^{-1}\hat{\symbf Q}_n'W\Big(\frac1n\sum_{i=1}^nZ_iY_i\Big)=\big(\symbf X'\symbf ZW\symbf Z'\symbf X\big)^{-1}\symbf X'\symbf ZW\symbf Z'\symbf Y .
+\]
+
+\itm{b}
+By the law of iterated expectations, $\E[Z_iu_i]=\E\big[Z_i\E[u_i\mid Z_i]\big]=0$, so
+\[
+\E[Z_ie_i]=\E[Z_i]\frac{\delta}{\sqrt n}+\E[Z_iu_i]=\frac{\delta}{\sqrt n}\,\mu_Z\neq0,
+\]
+since $\delta\neq0$ and $\mu_Z\neq0$. The moment condition fails, by an amount that shrinks with $n$: this is \emph{local} misspecification.
+
+\itm{c}
+Substituting $Y_i=X_i'\beta+e_i$ in a),
+\[
+\hat\beta-\beta=\big(\hat{\symbf Q}_n'W\hat{\symbf Q}_n\big)^{-1}\hat{\symbf Q}_n'W\,\frac1n\sum_{i=1}^nZ_ie_i,
+\]
+and with $e_i=\delta/\sqrt n+u_i$,
+\[
+\sqrt n(\hat\beta-\beta)=\big(\hat{\symbf Q}_n'W\hat{\symbf Q}_n\big)^{-1}\hat{\symbf Q}_n'W\left[\delta\,\frac1n\sum_{i=1}^nZ_i+\frac1{\sqrt n}\sum_{i=1}^nZ_iu_i\right].
+\]
+
+\itm{d}
+By the law of large numbers, $\hat{\symbf Q}_n\xrightarrow{p}\symbf Q$ and $\frac1n\sum_iZ_i\xrightarrow{p}\mu_Z$. By the CLT, since $Z_iu_i$ is i.i.d.\ with mean zero (and, we assume, finite second moments), $\frac1{\sqrt n}\sum_iZ_iu_i\xrightarrow{d}N(0,\Omega)$ with $\Omega=\E[Z_iZ_i'u_i^2]$. By Slutsky's theorem,
+\[
+\sqrt n(\hat\beta-\beta)\xrightarrow{d}N\Big(\underbrace{(\symbf Q'W\symbf Q)^{-1}\symbf Q'W\mu_Z\,\delta}_{\equiv\,b(W)},\ (\symbf Q'W\symbf Q)^{-1}\symbf Q'W\Omega W\symbf Q(\symbf Q'W\symbf Q)^{-1}\Big).
+\]
+The variance is the usual GMM sandwich, but the limit is no longer centered at zero: there is an asymptotic bias $b(W)$, which is nonzero unless $\symbf Q'W\mu_Z=0$. The misspecification is of the same order, $1/\sqrt n$, as the sampling noise, so it shows up as a shift of the limiting distribution. Confidence intervals centered at $\hat\beta$ undercover.
+
+\itm{e}
+No. The optimal weight matrix is $W=\Omega^{-1}$, the inverse of the variance of the moments (here the misspecification vanishes, so $\Omega$ is also the limit of the usual estimator $\hat{\symbf S}$). With it,
+\[
+b(\Omega^{-1})=(\symbf Q'\Omega^{-1}\symbf Q)^{-1}\symbf Q'\Omega^{-1}\mu_Z\,\delta,
+\]
+which is nonzero in general. Optimal weighting minimizes the variance assuming the moment conditions hold; it does not repair a moment condition that fails. The weighting matrix only changes how the violation $\mu_Z\delta/\sqrt n$ is spread across the coefficients.
+
+Two remarks. First, if $\mu_Z$ lies in the column space of $\symbf Q$, say $\mu_Z=\symbf Qc$ (for instance, when both $X$ and $Z$ contain a constant, and the constant is the first regressor, $c$ is the first unit vector), then $b(W)=c\,\delta$ for \emph{every} $W$: the misspecification is just a shift of the intercept by $\delta/\sqrt n$, the slopes are unaffected, and the weighting matrix is irrelevant. Second, when $\mu_Z$ is not in that column space, the violation is detectable: the $J$-statistic of Problem 4 then converges to a noncentral $\chi^2_{\ell-k}$, so the overidentification test rejects with probability above its size.
+
+\itm{f}
+No. From d), $\sqrt n(\hat\beta-\beta)=O_p(1)$, so $\hat\beta-\beta=O_p(n^{-1/2})\xrightarrow{p}0$: $\hat\beta$ is still consistent. The violation of the moment condition vanishes as $n\to\infty$, so it only affects the $\sqrt n$-scale distribution, not the probability limit. With a fixed violation ($e=\delta+u$), $\hat\beta$ would instead converge to $\beta+b(W)$, a pseudo-true value that depends on the weighting matrix.
+
+\end{document}
