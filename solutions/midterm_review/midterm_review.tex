@@ -1,0 +1,276 @@
+% TA session: midterm review, student handout.
+% Compile: latexmk -pdf -interaction=nonstopmode midterm_review.tex
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=2cm]{geometry}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\linespread{1.3}
+\parskip=12pt
+\parindent=0pt
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathpazo}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{needspace}
+
+\usepackage[dvipsnames]{xcolor}
+\definecolor{slateblue}{RGB}{45, 62, 80}
+\definecolor{FGVBlue}{RGB}{0, 114, 188}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=FGVBlue,
+	urlcolor=FGVBlue,
+	citecolor=FGVBlue,
+}
+\usepackage[most]{tcolorbox}
+
+% Custom commands
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Prob}{\mathbb{P}}
+
+\newcounter{question}
+\newcommand{\question}[1]{
+	\stepcounter{question}
+	\subsection*{Question \thequestion: #1}
+}
+\newcommand{\itm}[1]{\par\needspace{4\baselineskip}\textbf{#1)}\ }
+\newcommand{\solution}{\par\textcolor{FGVBlue}{\textbf{Solution.}}\par}
+\newcommand{\step}[1]{\par\emph{Step #1.}\ }
+% One small table per topic in Part 1, so that page breaks fall between topics
+\newenvironment{reviewtable}{\par\vspace{-8pt}\small\renewcommand{\arraystretch}{1.25}%
+	\tabularx{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{5.2cm}>{\raggedright\arraybackslash}X@{}}
+	\toprule Exercise & Slides & What to get out of it\\ \midrule}
+	{\bottomrule\endtabularx\par}
+
+% Boxed take-away at the end of each question
+\newtcolorbox{takeaway}{breakable, enhanced, colback=FGVBlue!5, colframe=FGVBlue!60,
+	boxrule=0.5pt, arc=1mm, left=6pt, right=6pt, top=3pt, bottom=3pt,
+	fonttitle=\bfseries\small, coltitle=FGVBlue!70!black, colbacktitle=FGVBlue!12,
+	title={What to remember}}
+
+\begin{document}
+	\begin{center}
+		{\LARGE{\textbf{TA Session: Midterm Review}}}\\
+		\vspace{0.2cm}
+		Econometrics I - \textcolor{FGVBlue}{FGV EPGE}\\
+		Instructor: Raul Guarini Riva \\
+		TA: Taric Latif Padovani
+	\end{center}
+
+%=====================================================================
+\section*{Part 1: Problem set exercises to review}
+
+Slide titles are those of the lecture notes in the course repository.
+
+\subsection*{Kernel estimation (Lecture 1)}
+\begin{reviewtable}
+PS1, Problem 1 b), e) & ``Asymptotic Theory'' (the slides with $\hat\Delta_1$ and $\hat\Delta_2$), ``Asymptotic Theory: Main Result'' & Change variables to write $\E[\hat f_n(x)]$ as an integral of $f$ against the kernel. Continuity of $f$ gives consistency; a Taylor expansion gives the bias of order $h^2$.\\
+\midrule
+PS1, Problem 2 c), d) & ``The Bias-Variance Trade-off'', ``The Local Linear Estimator'', ``How Do They Compare?'' & Why we need $h\to0$ and $nh\to\infty$, and how Nadaraya--Watson and local linear differ.\\
+\end{reviewtable}
+
+\subsection*{Bootstrap (Lecture 2)}
+\begin{reviewtable}
+PS1, Problem 4 & ``From $J_n$ to an Interval'', ``How Many Bootstrap Samples Are There?'', ``Consistency: The General Recipe'', ``Reading the Theorem'', ``The Maximum of a Uniform'' & What the bootstrap distribution is, what the consistency theorem needs, and a classic example where it does not hold.\\
+\end{reviewtable}
+
+\subsection*{Lag polynomials, stationarity and Wold (Lectures 4 and 5)}
+\begin{reviewtable}
+PS2, Problem 5 b) & Lecture 4: ``Can We Ever Invert $\phi(L)$?'', ``Roots Outside the Unit Circle'', ``Is the AR(p) Stationary?'' & Invert an AR lag polynomial: the recursion for the MA($\infty$) weights $\psi_k$.\\
+\midrule
+PS3, Problem 2 a), b) & Lecture 4: ``General Case for $\gamma_h$''. Lecture 5: ``Wold's Decomposition'', ``Why Wold Matters'' & Mean, variance and autocovariances of an MA($\infty$), $\gamma_h=\sigma^2\sum_j\psi_j\psi_{j+h}$.\\
+\end{reviewtable}
+
+\subsection*{Long-run variance and HAC (Lecture 7)}
+\begin{reviewtable}
+PS2, Problem 7 a) & ``The Variance of the Sample Mean'', ``The Long-Run Variance'', ``Dependence Changes the Variance'' & Under dependence, the variance of a sample mean adds up all the autocovariances, not only $\gamma_0$.\\
+\midrule
+PS4, Problem 1 a) & ``A CLT for Mixing Processes'', ``Setup and Consistency'', ``Serially Correlated Scores'', ``Estimating the Long-Run Variance'', ``The Newey-West Estimator'', ``Choosing the Bandwidth $q$'' & Which CLT applies to a dependent series, and what its long-run variance is. How to estimate a long-run variance in practice.\\
+\end{reviewtable}
+
+\subsection*{GMM (Lecture 9)}
+\begin{reviewtable}
+PS4, Problem 5 & ``The General Framework'', ``The GMM Estimator'', ``The First-Order Conditions'', the section ``The Optimal Weighting Matrix'', ``The Two-Step GMM Procedure'' & Efficient GMM with more moments than parameters, and why an extra moment with a known value can make the estimator more precise.\\
+\end{reviewtable}
+
+%=====================================================================
+\section*{Part 2: Practice questions}
+
+%---------------------------------------------------------------------
+\question{The histogram inside the kernel (Lecture 1)}
+
+Let $X_1,\dots,X_n$ be i.i.d.\ with density $f$, and fix a point $x$ with $f(x)>0$, near which $f$ is twice continuously differentiable. Estimate $f(x)$ with the uniform kernel, $K(u)=\frac12\mathbf 1\{|u|\le1\}$:
+\[
+\hat f(x)=\frac1{nh}\sum_{i=1}^nK\Big(\frac{X_i-x}h\Big).
+\]
+\begin{enumerate}[a)]
+	\item Show that $\hat f(x)=N/(2nh)$, where $N$ is the number of observations in $[x-h,x+h]$, and find the distribution of $N$. Use it to compute $\E[\hat f(x)]$ and $\Var(\hat f(x))$ exactly.
+	\item Show that, as $h\to0$, $\E[\hat f(x)]=f(x)+\frac{h^2}6f''(x)+o(h^2)$ and $\Var(\hat f(x))=\frac{f(x)}{2nh}+o\big(\frac1{nh}\big)$. Check these against the general formulas from class. If $f$ happens to be linear on $[x-h,x+h]$, is $\hat f(x)$ unbiased? Why?
+	\item Suppose $f''(x)\neq0$. Find the $h$ that minimizes the approximate mean squared error, $\big(\frac{h^2}6f''(x)\big)^2+\frac{f(x)}{2nh}$. At this bandwidth, how large is the bias relative to the standard deviation? In large samples, what is the coverage of the interval $\hat f(x)\pm1.96\,\mathrm{sd}(\hat f(x))$, where $\mathrm{sd}$ is the true standard deviation?
+\end{enumerate}
+
+\solution
+\itm{a}
+\step{1} $K\big((X_i-x)/h\big)$ is $\frac12$ if $|X_i-x|\le h$ and $0$ otherwise. So the sum equals $N/2$, and $\hat f(x)=N/(2nh)$.
+
+\step{2} Each observation falls in the window independently, with the same probability
+\[
+p_h\equiv\Prob\big(|X_i-x|\le h\big)=\int_{x-h}^{x+h}f(z)\,dz .
+\]
+So $N\sim\mathrm{Binomial}(n,p_h)$.
+
+\step{3} With $\E[N]=np_h$ and $\Var(N)=np_h(1-p_h)$,
+\[
+\E[\hat f(x)]=\frac{p_h}{2h},\qquad\Var(\hat f(x))=\frac{p_h(1-p_h)}{4nh^2}.
+\]
+\emph{In words.} $\hat f(x)$ is the share of the sample in the window divided by the width of the window: a histogram bar centered at $x$. Its mean, $p_h/(2h)$, is the average of $f$ over the window.
+
+\itm{b}
+\step{1: expand $p_h$} Change variables, $z=x+s$, and use Taylor, $f(x+s)=f(x)+f'(x)s+\frac12f''(x)s^2+o(s^2)$:
+\[
+p_h=\int_{-h}^{h}f(x+s)\,ds=2h\,f(x)+f'(x)\underbrace{\int_{-h}^hs\,ds}_{=0}+\frac12f''(x)\underbrace{\int_{-h}^hs^2\,ds}_{=2h^3/3}+o(h^3)=2hf(x)+\frac{h^3}3f''(x)+o(h^3).
+\]
+\step{2: the mean} Divide by $2h$: $\E[\hat f(x)]=f(x)+\frac{h^2}6f''(x)+o(h^2)$.
+
+\step{3: the variance} Since $p_h=2hf(x)+O(h^3)$ and $1-p_h\to1$,
+\[
+\Var(\hat f(x))=\frac{2hf(x)\big(1+o(1)\big)}{4nh^2}=\frac{f(x)}{2nh}+o\Big(\frac1{nh}\Big).
+\]
+\step{4: check with class} The general formulas are a bias of $\frac{h^2}2\kappa_2f''(x)$ and a variance of $\frac{f(x)R(K)}{nh}$. For the uniform kernel, $\kappa_2=\int u^2K(u)\,du=\frac12\int_{-1}^1u^2\,du=\frac13$ and $R(K)=\int K(u)^2\,du=\frac14\cdot2=\frac12$. This gives $\frac{h^2}6f''(x)$ and $\frac{f(x)}{2nh}$, as above.
+
+\step{5: a linear density} If $f(x+s)=f(x)+bs$ on $[-h,h]$, then $p_h=2hf(x)$ exactly, so $\E[\hat f(x)]=f(x)$ for every $h$: no bias. The window is symmetric, so the density gained on one side of $x$ is lost on the other. The bias comes from curvature, which is why it is of order $h^2$.
+
+\itm{c}
+\step{1: the optimal bandwidth} Differentiate $\frac{f''(x)^2}{36}h^4+\frac{f(x)}{2nh}$ with respect to $h$ and set it to zero:
+\[
+\frac{f''(x)^2}{9}h^3-\frac{f(x)}{2nh^2}=0\quad\Longrightarrow\quad h^*=\Big(\frac{9f(x)}{2f''(x)^2\,n}\Big)^{1/5}\propto n^{-1/5}.
+\]
+More curvature calls for a narrower window, and more data shrink the window, but slowly.
+
+\step{2: bias against standard deviation} Write the approximate MSE as $Ah^4+\frac B{nh}$, with $Ah^4$ the squared bias and $\frac B{nh}$ the variance. The first-order condition, $4Ah^3=\frac B{nh^2}$, says $Ah^4=\frac14\cdot\frac B{nh}$: at $h^*$, the squared bias is a quarter of the variance. So $|\text{bias}|=\frac12\,\mathrm{sd}$. At the MSE-optimal bandwidth, the bias stays at half a standard deviation, however large $n$ is.
+
+\step{3: coverage} In large samples, $\big(\hat f(x)-f(x)\big)/\mathrm{sd}$ is approximately $N(\pm\frac12,1)$, so
+\[
+\Prob\big(|\hat f(x)-f(x)|\le1.96\,\mathrm{sd}\big)\approx\Phi(1.96-0.5)-\Phi(-1.96-0.5)=\Phi(1.46)-\Phi(-2.46)\approx0.92,
+\]
+not $0.95$. An interval that ignores the bias undercovers. This is why the result from class keeps the bias term when $nh^5=O(1)$: with $h\propto n^{-1/5}$, $nh^5$ is constant and $\sqrt{nh}\times\text{bias}$ does not vanish. A smaller $h$ (undersmoothing) makes the bias negligible relative to the standard deviation, at the cost of a wider interval.
+
+\begin{takeaway}
+\begin{itemize}
+	\item With the uniform kernel, the estimator is a histogram bar centered at $x$: count divided by $n$ times the width. Its mean is the average of $f$ over the window.
+	\item A symmetric window kills the odd terms. The bias comes from curvature and is of order $h^2$; the variance is of order $1/(nh)$.
+	\item The MSE-optimal $h\propto n^{-1/5}$ balances the two, and leaves a bias of half a standard deviation. Intervals that ignore it undercover.
+\end{itemize}
+\end{takeaway}
+
+%---------------------------------------------------------------------
+\question{The bootstrap distribution, by hand (Lecture 2)}
+
+You observe $n=3$ observations: $x_1=1$, $x_2=2$, $x_3=6$, so $\bar x=3$. To learn about $\mu=\E[X_i]$, use the root $R_n=\sqrt n(\bar X_n-\mu)$. The bootstrap approximates its distribution $J_n(\cdot,P)$ by $J_n(\cdot,\hat P_n)$: the distribution of $R^*_n=\sqrt n(\bar X^*_n-\bar x)$ when $X^*_1,X^*_2,X^*_3$ are drawn i.i.d.\ from the empirical distribution $\hat P_n$. With $n=3$, no simulation is needed: you can compute $J_n(\cdot,\hat P_n)$ exactly.
+\begin{enumerate}[a)]
+	\item How many equally likely ordered bootstrap samples are there? How many distinct samples are there if we ignore the order? Are those equally likely?
+	\item Find the distribution of $D^*\equiv\bar X^*_n-\bar x$: its possible values and their probabilities. Check that its mean is zero and that its variance is $\hat\sigma^2/n$, where $\hat\sigma^2=\frac1n\sum_i(x_i-\bar x)^2$.
+	\item Using the quantile convention $J^{-1}(p)=\inf\{r:J(r)\ge p\}$, compute the $95\%$ bootstrap confidence interval for $\mu$ from Lecture 2 (slide ``From $J_n$ to an Interval''). Is it symmetric around $\bar x=3$? Why?
+\end{enumerate}
+
+\solution
+\itm{a}
+Each of the 3 draws picks one of the 3 points, so there are $3^3=27$ ordered samples, each with probability $\frac1{27}$. Ignoring the order, a sample is described by how many times each point is drawn, $(k_1,k_2,k_3)$ with $k_1+k_2+k_3=3$: there are $\binom{5}{2}=10$ such samples. They are \emph{not} equally likely: a sample with the same point three times, such as $\{1,1,1\}$, comes from one ordering (probability $\frac1{27}$); one with a repeated point, such as $\{1,1,2\}$, from three orderings ($\frac3{27}$); and $\{1,2,6\}$ from $3!=6$ orderings ($\frac6{27}$). Check: $3\cdot1+6\cdot3+1\cdot6=27$.
+
+\itm{b}
+\begin{center}
+\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccccccccc}
+\toprule
+Sample & $\{1,1,1\}$ & $\{1,1,2\}$ & $\{1,2,2\}$ & $\{2,2,2\}$ & $\{1,1,6\}$ & $\{1,2,6\}$ & $\{2,2,6\}$ & $\{1,6,6\}$ & $\{2,6,6\}$ & $\{6,6,6\}$\\
+$D^*$ & $-2$ & $-\frac53$ & $-\frac43$ & $-1$ & $-\frac13$ & $0$ & $\frac13$ & $\frac43$ & $\frac53$ & $3$\\
+$27\times$prob. & 1 & 3 & 3 & 1 & 3 & 6 & 3 & 3 & 3 & 1\\
+\bottomrule
+\end{tabular}
+\end{center}
+\emph{Mean:} $\frac1{27}\big[-2-5-4-1-1+0+1+4+5+3\big]=0$.
+
+\emph{Variance:} $\frac1{27}\big[4+3\cdot\frac{25}9+3\cdot\frac{16}9+1+3\cdot\frac19+0+3\cdot\frac19+3\cdot\frac{16}9+3\cdot\frac{25}9+9\big]=\frac1{27}\big[14+28\big]=\frac{14}9$.
+
+And $\hat\sigma^2=\frac13(4+1+9)=\frac{14}3$, so $\hat\sigma^2/n=\frac{14}9$. This holds in general: $\bar X^*_n$ is an average of $n$ i.i.d.\ draws from $\hat P_n$, a distribution with mean $\bar x$ and variance $\hat\sigma^2$.
+
+\emph{Shape.} The distribution is skewed to the right: from $-2$ up to $3$. The observation $6$ is far from the others, so bootstrap samples that repeat it have much larger means.
+
+\itm{c}
+\step{1: the quantiles} $R^*_n=\sqrt3D^*$, so the quantiles of $R^*_n$ are $\sqrt3$ times those of $D^*$. The cdf of $D^*$ is $\frac1{27}\approx0.037\ge0.025$ at $-2$, so the $0.025$-quantile is $-2$. At $\frac53$ the cdf is $\frac{26}{27}\approx0.963<0.975$, and it reaches one at $3$, so the $0.975$-quantile is $3$.
+
+\step{2: the interval} The interval collects the $\mu$'s with $\sqrt3\cdot(-2)\le\sqrt3(3-\mu)\le\sqrt3\cdot3$, that is, $-2\le3-\mu\le3$:
+\[
+C_n=[0,\,5].
+\]
+\step{3: symmetry} It is not symmetric around $3$: it reaches $3$ units below and $2$ above. The interval flips the bootstrap distribution. A long right tail of $\bar X^*_n-\bar x$ is read as ``$\bar X_n$ can be far above $\mu$'', which allows values of $\mu$ far below $\bar x$. (With $n=3$, this is only an illustration of the mechanics. The theorem from class is about large $n$.)
+
+\begin{takeaway}
+\begin{itemize}
+	\item The bootstrap distribution is a known, discrete distribution: the law of the root when we sample from $\hat P_n$. Simulation only approximates it.
+	\item It mimics the data: $\E^*[\bar X^*_n]=\bar x$ and $\Var^*(\bar X^*_n)=\hat\sigma^2/n$.
+	\item The interval flips the distribution of the root: a long right tail of the root gives a long left side of the interval.
+\end{itemize}
+\end{takeaway}
+
+%---------------------------------------------------------------------
+\question{Reading lag polynomials (Lectures 4 and 5)}
+
+Let $\varepsilon_t$ be white noise with variance $\sigma^2>0$, and consider
+\[
+\begin{aligned}
+&\text{(i)}\quad y_t=1.1\,y_{t-1}-0.3\,y_{t-2}+\varepsilon_t, &\qquad &\text{(ii)}\quad y_t=0.5\,y_{t-1}+0.5\,y_{t-2}+\varepsilon_t,\\
+&\text{(iii)}\quad y_t=\varepsilon_t-\varepsilon_{t-1}-0.75\,\varepsilon_{t-2}, &\qquad &\text{(iv)}\quad y_t=0.6\,y_{t-1}+\varepsilon_t-0.6\,\varepsilon_{t-1}.
+\end{aligned}
+\]
+\begin{enumerate}[a)]
+	\item For each process, answer two questions. Is there a covariance-stationary process that satisfies the equation? Can $\varepsilon_t$ be written as a convergent linear combination of $y_t,y_{t-1},\dots$? Justify with the roots of the relevant lag polynomials.
+	\item For process (i), find the MA($\infty$) weights $\psi_1,\psi_2,\psi_3$ and the autocorrelations $\rho_1$ and $\rho_2$.
+	\item For process (i), find the best linear forecast of $y_{t+1}$ given $y_t,y_{t-1},\dots$, its error and its mean squared error. What does this tell you about the shocks in Wold's decomposition of this process?
+\end{enumerate}
+
+\solution
+\itm{a}
+The rules from Lectures 4 and 5: if all the roots of the AR polynomial $\Phi(z)=1-\phi_1z-\cdots$ lie outside the unit circle, the equation has a stationary solution in current and past shocks, an MA($\infty$); if a root lies on the unit circle, it has no stationary solution. If all the roots of the MA polynomial $\Theta(z)=1+\theta_1z+\cdots$ lie outside the unit circle, the model is invertible, so the shocks can be recovered from current and past $y$'s.
+\begin{itemize}
+	\item[(i)] $\Phi(z)=1-1.1z+0.3z^2=(1-0.5z)(1-0.6z)$, with roots $2$ and $\frac53$, both outside: there is a stationary solution in current and past shocks. There is no MA part: $\varepsilon_t=y_t-1.1y_{t-1}+0.3y_{t-2}$, a finite combination, so yes.
+	\item[(ii)] $\Phi(z)=1-0.5z-0.5z^2=(1-z)(1+0.5z)$ has a root at $z=1$, on the unit circle: there is no stationary solution. This is a unit root. The differences $\Delta y_t=y_t-y_{t-1}$ satisfy $(1+0.5L)\Delta y_t=\varepsilon_t$, that is, $\Delta y_t=-0.5\,\Delta y_{t-1}+\varepsilon_t$, which is stationary (root $-2$).
+	\item[(iii)] A finite MA is always stationary (Lecture 4, ``General Case for $\gamma_h$''). But $\Theta(z)=1-z-0.75z^2=(1+0.5z)(1-1.5z)$ has roots $-2$ and $\frac23$, and $\frac23$ is inside the unit circle: the model is not invertible, and $\varepsilon_t$ cannot be written as a convergent combination of current and past $y$'s.
+	\item[(iv)] $\Phi(z)=\Theta(z)=1-0.6z$. The common factor cancels: $(1-0.6L)y_t=(1-0.6L)\varepsilon_t$ gives $y_t=\varepsilon_t$, white noise (Lecture 5, ``Cancelling Roots''). Its minimal representation is an ARMA(0,0): stationary and invertible.
+\end{itemize}
+
+\itm{b}
+\step{1: the $\psi$'s} From $\Phi(L)\psi(L)=1$: $\psi_0=1$, $\psi_1=1.1$, and $\psi_k=1.1\psi_{k-1}-0.3\psi_{k-2}$ (PS2, Problem 5 b). So
+\[
+\psi_2=1.1\cdot1.1-0.3=0.91,\qquad\psi_3=1.1\cdot0.91-0.3\cdot1.1=0.671 .
+\]
+\step{2: the $\rho$'s} Multiply the equation by $y_{t-h}$, $h\ge1$, and take expectations. Since the solution only involves current and past shocks, $\varepsilon_t$ is uncorrelated with $y_{t-h}$, and dividing by $\gamma_0$,
+\[
+\rho_h=1.1\,\rho_{h-1}-0.3\,\rho_{h-2}.
+\]
+For $h=1$: $\rho_1=1.1-0.3\rho_1$, so $\rho_1=\frac{1.1}{1.3}=\frac{11}{13}\approx0.846$. For $h=2$: $\rho_2=1.1\cdot\frac{11}{13}-0.3=\frac{41}{65}\approx0.631$.
+
+\itm{c}
+\step{1: the forecast} $y_{t+1}=1.1y_t-0.3y_{t-1}+\varepsilon_{t+1}$. The shock $\varepsilon_{t+1}$ is uncorrelated with $y_t,y_{t-1},\dots$, which only involve shocks up to $t$. So the error of the forecast $1.1y_t-0.3y_{t-1}$ is uncorrelated with everything in the information set: this is the best linear forecast. Its error is $\varepsilon_{t+1}$, and its mean squared error is $\sigma^2$.
+
+\step{2: Wold} In Wold's decomposition (Lecture 5), the shock $e_t\equiv y_t-\mathcal P_{t-1}[y_t]$ is the error of the best linear forecast of $y_t$ from its own past. Step 1, moved back one period, shows that $e_t=\varepsilon_t$: the Wold shocks are the shocks of the model. So $y_t=\sum_{j\ge0}\psi_j\varepsilon_{t-j}$, with the $\psi_j$ from (b), is the Wold decomposition of $y_t$.
+
+\begin{takeaway}
+\begin{itemize}
+	\item AR polynomial with all roots outside the unit circle: a stationary solution in current and past shocks. MA polynomial with all roots outside: the model is invertible.
+	\item A root exactly on the unit circle: no stationary solution. Difference the series.
+	\item Common factors cancel: always reduce to the minimal representation first.
+	\item The best linear forecast is the one whose error is uncorrelated with the information set. The one-step error is the shock in Wold's decomposition.
+\end{itemize}
+\end{takeaway}
+
+\end{document}
